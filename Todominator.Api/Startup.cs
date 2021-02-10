@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Todominator.Business.Service;
+using Todominator.Core.Repository;
+using Todominator.Core.Service;
+using Todominator.Repository;
+using Todominator.Repository.Repository;
 
 namespace Todominator.Api
 {
@@ -26,6 +27,20 @@ namespace Todominator.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddScoped<ITodoService, TodoService>();
+            services.AddScoped<ITodoRepository, TodoRepository>();
+
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<DbContext, AppDbContext>(
+                options => options.UseMySql(connectionString,
+                    mySqlOptions =>
+                    {
+                        mySqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: 3,
+                            maxRetryDelay: TimeSpan.FromSeconds(5),
+                            errorNumbersToAdd: new List<int>());
+                    })
+            );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

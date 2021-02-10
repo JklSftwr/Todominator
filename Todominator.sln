@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todominator.Api", "Todominator.Api\Todominator.Api.csproj", "{5D74CD90-3F49-4316-A32F-486127C31A39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todominator.Api", "Todominator.Api\Todominator.Api.csproj", "{5D74CD90-3F49-4316-A32F-486127C31A39}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todominator.Core", "Todominator.Core\Todominator.Core.csproj", "{BE801669-DBFA-4D7C-AEFB-926D49A22FAC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todominator.Core", "Todominator.Core\Todominator.Core.csproj", "{BE801669-DBFA-4D7C-AEFB-926D49A22FAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todominator.Business", "Todominator.Business\Todominator.Business.csproj", "{5B7898D6-9FE9-447F-8F2E-C337B1012F1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todominator.Business", "Todominator.Business\Todominator.Business.csproj", "{5B7898D6-9FE9-447F-8F2E-C337B1012F1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todominator.Repository", "Todominator.Repository\Todominator.Repository.csproj", "{37A698EC-D06E-4A0C-BB13-9C0239BC7718}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Todominator.Repository", "Todominator.Repository\Todominator.Repository.csproj", "{37A698EC-D06E-4A0C-BB13-9C0239BC7718}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

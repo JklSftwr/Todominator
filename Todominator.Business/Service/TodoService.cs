@@ -1,32 +1,33 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Todominator.Core.Domain;
+using Todominator.Core.Repository;
 using Todominator.Core.Service;
 
 namespace Todominator.Business.Service
 {
     public class TodoService : ITodoService
     {
-        private readonly ITodoService _service;
+        private readonly ITodoRepository _repository;
 
-        public TodoService(ITodoService service)
+        public TodoService(ITodoRepository repository)
         {
-            _service = service;
+            _repository = repository;
         }
 
         public async Task<TodoEntry> AddTodoAsync(TodoEntry todo)
         {
-            return await _service.AddTodoAsync(todo);
+            return await _repository.AddTodoAsync(todo);
         }
 
         public async Task<IEnumerable<TodoEntry>> GetTodoListAsync()
         {
-            return await _service.GetTodoListAsync();
+            return await _repository.GetTodoListAsync();
         }
 
         public async Task<TodoEntry> SetTodoDoneAsync(long todoId)
         {
-            return await _service.SetTodoDoneAsync(todoId);
+            return await _repository.SetTodoDoneAsync(todoId);
         }
     }
 }
