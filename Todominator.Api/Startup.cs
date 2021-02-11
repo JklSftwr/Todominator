@@ -27,20 +27,12 @@ namespace Todominator.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddScoped<ITodoService, TodoService>();
             services.AddScoped<ITodoRepository, TodoRepository>();
+            services.AddScoped<ITodoService, TodoService>();
 
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<DbContext, AppDbContext>(
-                options => options.UseMySql(connectionString,
-                    mySqlOptions =>
-                    {
-                        mySqlOptions.EnableRetryOnFailure(
-                            maxRetryCount: 3,
-                            maxRetryDelay: TimeSpan.FromSeconds(5),
-                            errorNumbersToAdd: new List<int>());
-                    })
-            );
+            services.AddDbContext<AppDbContext>(
+                options => options.UseMySql(connectionString));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,16 +43,31 @@ namespace Todominator.Api
                 app.UseDeveloperExceptionPage();
             }
 
+            UpdateDatabase(app);
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private static void UpdateDatabase(IApplicationBuilder app)
+        {
+            using (var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope())
+            {
+                using (var context = serviceScope.ServiceProvider.GetRequiredService<AppDbContext>())
+                {
+                    var canConnect = context.Database.CanConnect();
+
+                    context.Database.Migrate();
+                }
+            }
         }
     }
 }

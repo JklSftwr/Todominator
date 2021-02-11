@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Todominator.Core.Domain;
 using Todominator.Core.Repository;
@@ -8,19 +10,38 @@ namespace Todominator.Repository.Repository
 {
     public class TodoRepository : ITodoRepository
     {
-        public Task<TodoEntry> AddTodoAsync(TodoEntry todo)
+        private readonly AppDbContext _context;
+
+        public TodoRepository(AppDbContext context)
         {
-            throw new NotImplementedException();
+            _context = context;
         }
 
-        public Task<IEnumerable<TodoEntry>> GetTodoListAsync()
+        public async Task<TodoEntry> AddTodoAsync(TodoEntry todo)
         {
-            throw new NotImplementedException();
+            _context.TodoEntries.Add(todo);
+            await _context.SaveChangesAsync();
+
+            return todo;
         }
 
-        public Task<TodoEntry> SetTodoDoneAsync(long todoId)
+        public async Task<IEnumerable<TodoEntry>> GetTodoListAsync()
         {
-            throw new NotImplementedException();
+            return await _context.TodoEntries.ToListAsync();
+        }
+
+        public async Task<TodoEntry> SetTodoDoneAsync(long todoId)
+        {
+            var todo = await _context.TodoEntries.FirstOrDefaultAsync(x => x.Id == todoId);
+            if (todo == null)
+            {
+                return null;
+            }
+
+            todo.IsDone = true;
+            await _context.SaveChangesAsync();
+
+            return todo;
         }
     }
 }
